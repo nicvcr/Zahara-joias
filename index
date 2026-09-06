@@ -1,0 +1,413 @@
+<html style="margin:0;padding:0;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo - Joias & Acessórios</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBXbqnMf6skb1C7uZMl7ic_jsKF0vOX4xU",
+  authDomain: "catalogojoias.firebaseapp.com",
+  projectId: "catalogojoias",
+  storageBucket: "catalogojoias.firebasestorage.app",
+  messagingSenderId: "605499106915",
+  appId: "1:605499106915:web:f482bd457a7ac188dafa56"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let currentCategory = "Todas";
+let allCategories = [];
+let allProducts = [];
+let allClients = [];
+let photoB64 = null;
+let isAdminMode = false;
+
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+</script>
+
+<style>
+:root{--bg:#faf6f0;--card:#ffffff;--text:#2a2320;--muted:#7a6f66;--accent:#b8941f;--accent-soft:rgba(184,148,31,.1);--accent2:#0a9e99;--accent2-soft:rgba(10,158,153,.1);--border:rgba(42,35,32,.1)}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100%;margin:0;}
+.reveal{opacity:0;transform:translateY(20px);animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.product-card{transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;}
+.product-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 40px rgba(184,148,31,.12);}
+.category-btn{transition:all .2s ease;}
+.category-btn:hover{border-color:var(--accent);color:var(--accent);}
+.category-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+.modal-backdrop{background:rgba(0,0,0,.5);backdrop-filter:blur(4px);}
+.gold-btn{background:var(--accent-soft);color:var(--text);border:1px solid var(--accent);transition:all .2s ease;}
+.gold-btn:hover{background:rgba(184,148,31,.18);}
+.ghost-btn{background:transparent;color:var(--muted);border:1px solid var(--border);transition:all .2s ease;}
+.ghost-btn:hover{border-color:var(--muted);color:var(--text);}
+.danger-btn{background:rgba(220,38,38,.08);color:#b91c1c;border:1px solid rgba(220,38,38,.25);transition:all .2s ease;}
+.danger-btn:hover{background:rgba(220,38,38,.15);}
+.input-field{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 14px;width:100%;transition:border-color .2s ease;font-size:14px;font-family:inherit;box-sizing:border-box;}
+.input-field:focus{outline:none;border-color:var(--accent);}
+textarea.input-field{resize:vertical;min-height:80px;}
+.tab-btn{padding:10px 20px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;font-weight:500;border-bottom:2px solid transparent;transition:all .2s ease;font-family:inherit;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.paid-badge{background:rgba(10,158,153,.1);color:var(--accent2);border:1px solid var(--accent2);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.pending-badge{background:rgba(184,148,31,.12);color:var(--accent);border:1px solid var(--accent);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
+table{width:100%;border-collapse:collapse;margin-top:16px;}
+th{text-align:left;padding:10px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);border-bottom:1px solid var(--border);}
+td{padding:10px 8px;border-bottom:1px solid var(--border);font-size:14px;}
+</style>
+</head>
+<body>
+
+<header style="border-bottom:1px solid var(--border);background:rgba(250,246,240,.95);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);">
+  <div style="max-width:1280px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:center;position:relative;">
+    <div style="text-align:center;">
+      <h1 style="font-size:28px;font-weight:700;letter-spacing:0.15em;color:var(--text);">
+        <span style="color:var(--accent);">CAT</span><span style="color:var(--accent2);">Á</span><span style="color:var(--accent);">LOGO</span>
+      </h1>
+      <p style="font-size:11px;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;margin-top:4px;">Joias & Acessórios</p>
+    </div>
+    <button onclick="openLoginModal()" style="position:absolute;right:24px;top:50%;transform:translateY(-50%);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;" class="ghost-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Admin
+    </button>
+  </div>
+</header>
+
+<main id="mainContent" style="max-width:1280px;margin:0 auto;padding:40px 24px;">
+  <div class="reveal" style="text-align:center;margin-bottom:48px;">
+    <p style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Coleção Exclusiva</p>
+    <h2 style="font-size:42px;font-weight:700;line-height:1.15;margin-bottom:16px;">
+      Descubra peças que <span style="background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">contam histórias</span>
+    </h2>
+    <p style="color:var(--muted);max-width:600px;margin:0 auto;font-size:16px;line-height:1.7;">
+      Anéis, brincos, braceletes, colares e óculos de sol selecionados com cuidado para você.
+    </p>
+  </div>
+
+  <div id="categoryFilters" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:40px;">
+    <div class="loading">Carregando categorias...</div>
+  </div>
+
+  <div id="productsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-bottom:60px;">
+    <div class="loading" style="grid-column:1/-1;">Carregando produtos...</div>
+  </div>
+
+  <div id="emptyState" style="display:none;text-align:center;padding:80px 20px;color:var(--muted);">
+    <p style="font-size:16px;">Nenhum produto disponível nesta categoria.</p>
+  </div>
+</main>
+
+<footer style="border-top:1px solid var(--border);background:var(--card);padding:50px 24px;">
+  <div style="max-width:1280px;margin:0 auto;text-align:center;">
+    <h3 style="font-size:22px;font-weight:600;margin-bottom:8px;color:var(--text);">Entre em contato</h3>
+    <p style="color:var(--muted);margin-bottom:32px;font-size:14px;">Estamos prontas para ajudar você a encontrar a peça perfeita</p>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
+      <a href="tel:+5541995511560" style="flex:1 1 240px;max-width:320px;padding:24px;border-radius:16px;background:var(--bg);border:1px solid var(--border);text-decoration:none;color:var(--text);">
+        <p style="font-size:18px;font-weight:600;margin-bottom:4px;">Nicole</p>
+        <p style="color:var(--accent2);font-size:16px;font-weight:600;">(41) 99551-1560</p>
+      </a>
+      <a href="tel:+5541991222449" style="flex:1 1 240px;max-width:320px;padding:24px;border-radius:16px;background:var(--bg);border:1px solid var(--border);text-decoration:none;color:var(--text);">
+        <p style="font-size:18px;font-weight:600;margin-bottom:4px;">Fabiana</p>
+        <p style="color:var(--accent2);font-size:16px;font-weight:600;">(41) 99122-2449</p>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<div id="loginModal" style="display:none;position:fixed;inset:0;z-index:100;" class="modal-backdrop">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;width:90%;max-width:400px;margin:100px auto;position:relative;">
+    <button onclick="closeLoginModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;">×</button>
+    <h3 style="font-size:22px;font-weight:600;margin-bottom:6px;text-align:center;">Acesso Administrativo</h3>
+    <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:24px;">Entre com suas credenciais</p>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Usuário</label>
+      <input type="text" id="loginUser" class="input-field" placeholder="admin">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Senha</label>
+      <input type="password" id="loginPass" class="input-field" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()">
+    </div>
+    <p id="loginError" style="color:#b91c1c;font-size:13px;margin-bottom:14px;display:none;text-align:center;">Usuário ou senha incorretos</p>
+    <button onclick="doLogin()" class="gold-btn" style="width:100%;padding:12px;border-radius:10px;font-weight:600;cursor:pointer;">Entrar</button>
+  </div>
+</div>
+
+<div id="adminPanel" style="display:none;max-width:1280px;margin:0 auto;padding:40px 24px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;">
+    <div>
+      <button onclick="logout()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;margin-bottom:8px;">← Voltar à loja</button>
+      <h2 style="font-size:28px;font-weight:700;">Painel Administrativo</h2>
+    </div>
+    <button onclick="logout()" class="ghost-btn" style="padding:10px 20px;border-radius:10px;cursor:pointer;">Sair</button>
+  </div>
+
+  <div style="border-bottom:1px solid var(--border);margin-bottom:28px;display:flex;gap:4px;flex-wrap:wrap;">
+    <button onclick="switchTab('products')" class="tab-btn active" data-tab="products">Produtos</button>
+    <button onclick="switchTab('categories')" class="tab-btn" data-tab="categories">Categorias</button>
+    <button onclick="switchTab('clients')" class="tab-btn" data-tab="clients">Clientes</button>
+  </div>
+
+  <!-- ========== ABA PRODUTOS ========== -->
+  <div id="tab-products" class="tab-content active">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">+ Cadastrar Novo Produto</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+        <div style="grid-column:1/-1;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Nome do produto</label>
+          <input type="text" id="prodName" class="input-field" placeholder="Ex: Anel de Ouro 18k">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Preço (R$)</label>
+          <input type="number" id="prodPrice" class="input-field" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Categoria</label>
+          <select id="prodCategory" class="input-field"><option value="">Carregando...</option></select>
+        </div>
+        <div style="grid-column:1/-1;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Descrição</label>
+          <textarea id="prodDescription" class="input-field" placeholder="Material, detalhes..."></textarea>
+        </div>
+        <div style="grid-column:1/-1;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Foto do produto</label>
+          <input type="file" id="prodPhoto" accept="image/*" onchange="handlePhoto(event)" style="margin-bottom:10px;">
+          <div id="previewContainer" style="display:none;">
+            <img id="photoPreviewImg" style="max-width:150px;max-height:150px;border-radius:8px;">
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+        <button onclick="saveProduct()" class="gold-btn" style="padding:12px 28px;border-radius:10px;font-weight:600;cursor:pointer;">Salvar Produto</button>
+        <button onclick="clearProductForm()" class="ghost-btn" style="padding:12px 28px;border-radius:10px;cursor:pointer;">Limpar</button>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">Produtos Cadastrados</h3>
+      <div id="adminProductsList"><p style="color:var(--muted);">Carregando...</p></div>
+    </div>
+  </div>
+
+  <!-- ========== ABA CATEGORIAS ========== -->
+  <div id="tab-categories" class="tab-content">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">+ Adicionar Nova Categoria</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <input type="text" id="newCategory" class="input-field" placeholder="Nome da categoria" style="flex:1;min-width:200px;">
+        <button onclick="addCategory()" class="gold-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;cursor:pointer;">Adicionar</button>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">Categorias Cadastradas</h3>
+      <div id="categoriesList"><p style="color:var(--muted);">Carregando...</p></div>
+    </div>
+  </div>
+
+  <!-- ========== ABA CLIENTES ========== -->
+  <div id="tab-clients" class="tab-content">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">+ Cadastrar Novo Cliente</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Nome completo</label>
+          <input type="text" id="clientName" class="input-field" placeholder="Nome da cliente">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Telefone</label>
+          <input type="text" id="clientPhone" class="input-field" placeholder="(41) 99999-9999">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Produto comprado</label>
+          <input type="text" id="clientProduct" class="input-field" placeholder="Nome do produto">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Valor total (R$)</label>
+          <input type="number" id="clientTotal" class="input-field" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Valor já pago (R$)</label>
+          <input type="number" id="clientPaid" class="input-field" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+          <button onclick="saveClient()" class="gold-btn" style="width:100%;padding:10px;border-radius:10px;font-weight:600;cursor:pointer;">Cadastrar Cliente</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;">
+      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">Clientes Cadastrados</h3>
+      <div id="clientsList"><p style="color:var(--muted);">Carregando...</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== LOGIN ==========
+function openLoginModal() { document.getElementById('loginModal').style.display='block'; }
+function closeLoginModal() { document.getElementById('loginModal').style.display='none'; document.getElementById('loginError').style.display='none'; }
+function doLogin() {
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    isAdminMode=true; closeLoginModal();
+    document.getElementById('mainContent').style.display='none';
+    document.querySelector('footer').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    loadCategories(); loadProducts(); loadClients();
+  }else{ document.getElementById('loginError').style.display='block'; }
+}
+function logout(){
+  isAdminMode=false;
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('mainContent').style.display='block';
+  document.querySelector('footer').style.display='block';
+}
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.tab===name)b.classList.add('active');});
+  document.querySelectorAll('.tab-content').forEach(c=>{c.classList.remove('active');if(c.id==='tab-'+name)c.classList.add('active');});
+}
+
+// ========== CATEGORIAS ==========
+async function loadCategories(){
+  try{
+    const snap=await db.collection('categorias').get();
+    allCategories=[]; snap.forEach(d=>allCategories.push({id:d.id,...d.data()}));
+    renderCategoryFilters(); updateCategorySelect(); renderCategoriesList();
+  }catch(e){
+    console.error('Categorias:',e);
+    document.getElementById('categoryFilters').innerHTML='<div style="color:red;padding:20px;">Erro: '+e.message+'</div>';
+  }
+}
+function renderCategoryFilters(){
+  const c=document.getElementById('categoryFilters');
+  let h=`<button class="category-btn active" onclick="filterByCategory('Todas')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--accent-soft);color:var(--accent);cursor:pointer;">Todas</button>`;
+  allCategories.forEach(x=>h+=`<button class="category-btn" onclick="filterByCategory('${x.nome}')" style="padding:8px 16px;border-radius:20px;border:1px solid var(--border);cursor:pointer;">${x.nome}</button>`);
+  c.innerHTML=h;
+}
+function updateCategorySelect(){
+  const s=document.getElementById('prodCategory');
+  s.innerHTML='<option value="">Selecione...</option>';
+  allCategories.forEach(x=>s.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);
+}
+async function addCategory(){
+  const n=document.getElementById('newCategory').value.trim();
+  if(!n)return alert('Digite o nome da categoria');
+  await db.collection('categorias').add({nome:n});
+  document.getElementById('newCategory').value=''; loadCategories();
+}
+function renderCategoriesList(){
+  const c=document.getElementById('categoriesList');
+  if(!allCategories.length)return c.innerHTML='<p style="color:var(--muted);">Nenhuma categoria cadastrada.</p>';
+  c.innerHTML=allCategories.map(x=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span>${x.nome}</span><button onclick="deleteCategory('${x.id}')" class="danger-btn" style="padding:6px 12px;border-radius:6px;cursor:pointer;">Excluir</button></div>`).join('');
+}
+async function deleteCategory(id){ if(!confirm('Excluir?'))return; await db.collection('categorias').doc(id).delete(); loadCategories(); }
+function filterByCategory(name){
+  currentCategory=name;
+  document.querySelectorAll('.category-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProductsGrid();
+}
+
+// ========== PRODUTOS ==========
+async function loadProducts(){
+  try{
+    const snap=await db.collection('produtos').get();
+    allProducts=[]; snap.forEach(d=>allProducts.push({id:d.id,...d.data()}));
+    renderProductsGrid(); renderAdminProductsList();
+  }catch(e){
+    console.error('Produtos:',e);
+    document.getElementById('productsGrid').innerHTML='<div style="color:red;text-align:center;padding:40px;">Erro: '+e.message+'</div>';
+  }
+}
+function renderProductsGrid(){
+  const g=document.getElementById('productsGrid');
+  const empty=document.getElementById('emptyState');
+  const filtered=currentCategory==='Todas'?allProducts:allProducts.filter(p=>p.categoria===currentCategory);
+  if(!filtered.length){g.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  g.innerHTML=filtered.map(p=>`<div class="product-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;"><div style="width:100%;height:200px;background:var(--bg);display:flex;align-items:center;justify-content:center;">${p.fotoBase64?`<img src="${p.fotoBase64}" style="width:100%;height:100%;object-fit:cover;">`:'<span style="color:var(--muted);">Sem foto</span>'}</div><div style="padding:16px;"><h4 style="font-weight:600;font-size:16px;margin-bottom:4px;">${p.nome}</h4><p style="color:var(--muted);font-size:13px;margin-bottom:8px;">${p.categoria||''}</p><p style="font-size:18px;font-weight:700;color:var(--accent2);">R$ ${Number(p.preco||0).toFixed(2).replace('.',',')}</p></div></div>`).join('');
+}
+function renderAdminProductsList(){
+  const c=document.getElementById('adminProductsList');
+  if(!allProducts.length)return c.innerHTML='<p style="color:var(--muted);">Nenhum produto cadastrado.</p>';
+  c.innerHTML=allProducts.map(p=>`<div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><div><strong>${p.nome}</strong> — ${p.categoria||'Sem categoria'} — R$ ${Number(p.preco||0).toFixed(2).replace('.',',')}</div><button onclick="deleteProduct('${p.id}')" class="danger-btn" style="padding:6px 12px;border-radius:6px;cursor:pointer;">Excluir</button></div>`).join('');
+}
+function handlePhoto(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=x=>{photoB64=x.target.result;document.getElementById('photoPreviewImg').src=photoB64;document.getElementById('previewContainer').style.display='block';}; r.readAsDataURL(f);
+}
+async function saveProduct(){
+  const nome=document.getElementById('prodName').value.trim();
+  const preco=parseFloat(document.getElementById('prodPrice').value||0);
+  const categoria=document.getElementById('prodCategory').value;
+  const descricao=document.getElementById('prodDescription').value.trim();
+  if(!nome||!preco)return alert('Preencha nome e preço');
+  await db.collection('produtos').add({nome,preco,categoria,descricao,fotoBase64:photoB64});
+  clearProductForm(); loadProducts();
+}
+function clearProductForm(){
+  document.getElementById('prodName').value='';
+  document.getElementById('prodPrice').value='';
+  document.getElementById('prodCategory').value='';
+  document.getElementById('prodDescription').value='';
+  document.getElementById('prodPhoto').value='';
+  document.getElementById('previewContainer').style.display='none';
+  photoB64=null;
+}
+async function deleteProduct(id){ if(!confirm('Excluir produto?'))return; await db.collection('produtos').doc(id).delete(); loadProducts(); }
+
+// ========== CLIENTES ==========
+async function loadClients(){
+  try{
+    const snap=await db.collection('clientes').get();
+    allClients=[]; snap.forEach(d=>allClients.push({id:d.id,...d.data()}));
+    renderClientsList();
+  }catch(e){
+    console.error('Clientes:',e);
+    document.getElementById('clientsList').innerHTML='<div style="color:red;padding:20px;">Erro: '+e.message+'</div>';
+  }
+}
+async function saveClient(){
+  const nome=document.getElementById('clientName').value.trim();
+  const telefone=document.getElementById('clientPhone').value.trim();
+  const produto=document.getElementById('clientProduct').value.trim();
+  const total=parseFloat(document.getElementById('clientTotal').value||0);
+  const pago=parseFloat(document.getElementById('clientPaid').value||0);
+  if(!nome||!total)return alert('Preencha nome e valor total');
+  await db.collection('clientes').add({nome,telefone,produto,valorTotal:total,valorPago:pago,dataCadastro:new Date()});
+  clearClientForm(); loadClients();
+}
+function clearClientForm(){
+  document.getElementById('clientName').value='';
+  document.getElementById('clientPhone').value='';
+  document.getElementById('clientProduct').value='';
+  document.getElementById('clientTotal').value='';
+  document.getElementById('clientPaid').value='';
+}
+function renderClientsList(){
+  const c=document.getElementById('clientsList');
+  if(!allClients.length)return c.innerHTML='<p style="color:var(--muted);">Nenhum cliente cadastrado.</p>';
+  c.innerHTML='<table><thead><tr><th>Cliente</th><th>Telefone</th><th>Produto</th><th>Total</th><th>Pago</th><th>Falta</th><th>Status</th><th>Ações</th></tr></thead><tbody>'+
+    allClients.map(x=>{
+      const falta=Math.max(0,Number(x.valorTotal||0)-Number(x.valorPago||0));
+      const status=falta<=0?'Pago':'Pendente';
+      const statusClass=falta<=0?'paid-badge':'pending-badge';
+      return `<tr><td><strong>${x.nome}</strong></td><td>${x.telefone||'-'}</td><td>${x.produto||'-'}</td><td>R$ ${Number(x.valorTotal||0).toFixed(2).replace('.',',')}</td><td>R$ ${Number(x.valorPago||0).toFixed(2).replace('.',',')}</td><td style="font-weight:600;color:${falta>0?'#b91c1c':'#0a9e99'}">R$ ${falta.toFixed(2).replace('.',',')}</td><td><span class="${statusClass}">${status}</span></td><td><button onclick="deleteClient('${x.id}')" class="danger-btn" style="padding:4px 8px;border-radius:4px;font-size:12px;cursor:pointer;">Excluir</button></td></tr>`;
+    }).join('')+'</tbody></table>';
+}
+async function deleteClient(id){ if(!confirm('Excluir este cliente?'))return; await db.collection('clientes').doc(id).delete(); loadClients(); }
+
+// ========== INICIO ==========
+window.onload=function(){ loadCategories(); loadProducts(); };
+</script>
+</body>
+</html>

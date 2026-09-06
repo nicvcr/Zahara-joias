@@ -1,0 +1,1010 @@
+<html style="margin:0;padding:0;">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = ':root{--bg:#faf6f0;--card:#ffffff;--text:#2a2320;--muted:#7a6f66;--accent:#b8941f;--accent-soft:rgba(184,148,31,.1);--accent2:#0a9e99;--accent2-soft:rgba(10,158,153,.1);--border:rgba(42,35,32,.1)}.reveal{opacity:0;transform:translateY(20px);animation:fadeUp .6s ease forwards}.reveal:nth-child(2){animation-delay:.1s}.reveal:nth-child(3){animation-delay:.2s}.reveal:nth-child(4){animation-delay:.3s}.reveal:nth-child(5){animation-delay:.4s}@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}.product-card{transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}.product-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 40px rgba(184,148,31,.12)}.category-btn{transition:all .2s ease}.category-btn:hover{border-color:var(--accent);color:var(--accent)}.category-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}.modal-backdrop{background:rgba(0,0,0,.5);backdrop-filter:blur(4px)}.sold-badge{background:rgba(220,38,38,.1);color:#b91c1c;border:1px solid rgba(220,38,38,.25)}.tiffany-btn{background:var(--accent2-soft);color:var(--text);border:1px solid var(--accent2);transition:all .2s ease}.tiffany-btn:hover{background:rgba(10,158,153,.18)}.gold-btn{background:var(--accent-soft);color:var(--text);border:1px solid var(--accent);transition:all .2s ease}.gold-btn:hover{background:rgba(184,148,31,.18)}.ghost-btn{background:transparent;color:var(--muted);border:1px solid var(--border);transition:all .2s ease}.ghost-btn:hover{border-color:var(--muted);color:var(--text)}.danger-btn{background:rgba(220,38,38,.08);color:#b91c1c;border:1px solid rgba(220,38,38,.25);transition:all .2s ease}.danger-btn:hover{background:rgba(220,38,38,.15)}.input-field{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 14px;width:100%;transition:border-color .2s ease;font-size:14px;font-family:inherit;}.input-field:focus{outline:none;border-color:var(--accent)}.input-field::placeholder{color:var(--muted)}textarea.input-field{resize:vertical;min-height:90px;line-height:1.5;}.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:30px;text-align:center;transition:all .2s ease;cursor:pointer;background:var(--bg)}.drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:var(--accent-soft)}.price-tag{color:var(--accent2);font-weight:700}.admin-row{transition:background .15s ease}.admin-row:hover{background:rgba(184,148,31,.04)}.tab-btn{padding:10px 20px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;font-weight:500;border-bottom:2px solid transparent;transition:all .2s ease;font-family:inherit}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}.tab-btn:hover{color:var(--text)}.tab-content{display:none}.tab-content.active{display:block}.paid-badge{background:rgba(10,158,153,.1);color:var(--accent2);border:1px solid var(--accent2);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}.pending-badge{background:rgba(184,148,31,.12);color:var(--accent);border:1px solid var(--accent);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}.overdue-badge{background:rgba(220,38,38,.08);color:#b91c1c;border:1px solid rgba(220,38,38,.3);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}.product-desc{color:var(--muted);font-size:13px;line-height:1.5;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}';
+  document.head.appendChild(s);
+})();
+</script>
+<div style="background-color:transparent;box-sizing:border-box;">
+  <div style="color:var(--text);font-family:'Syne',sans-serif;background:var(--bg);min-height:100%;">
+    
+    <!-- HEADER -->
+    <header style="border-bottom:1px solid var(--border);background:rgba(250,246,240,.95);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);">
+      <div style="max-width:1280px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:center;position:relative;">
+        <div style="text-align:center;">
+          <h1 style="font-size:28px;font-weight:700;letter-spacing:0.15em;color:var(--text);">
+            <span style="color:var(--accent);">CAT</span><span style="color:var(--accent2);">Á</span><span style="color:var(--accent);">LOGO</span>
+          </h1>
+          <p style="font-size:11px;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;margin-top:4px;">Joias & Acessórios</p>
+        </div>
+        <button onclick="openLoginModal()" style="position:absolute;right:24px;top:50%;transform:translateY(-50%);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;" class="ghost-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Admin
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT - STORE -->
+    <main id="mainContent" style="max-width:1280px;margin:0 auto;padding:40px 24px;">
+      
+      <!-- HERO -->
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+        <p style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Coleção Exclusiva</p>
+        <h2 style="font-size:42px;font-weight:700;line-height:1.15;margin-bottom:16px;">
+          Descubra peças que <span style="background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">contam histórias</span>
+        </h2>
+        <p style="color:var(--muted);max-width:600px;margin:0 auto;font-size:16px;line-height:1.7;">
+          Anéis, brincos, braceletes, colares e óculos de sol selecionados com cuidado para você.
+        </p>
+      </div>
+
+      <!-- CATEGORY FILTERS -->
+      <div id="categoryFilters" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:40px;">
+        <!-- Filters rendered by JS -->
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div id="productsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;margin-bottom:60px;">
+        <!-- Products will be rendered here -->
+      </div>
+
+      <div id="emptyState" style="display:none;text-align:center;padding:80px 20px;color:var(--muted);">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 16px;opacity:.5;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <p style="font-size:16px;">Nenhum produto disponível nesta categoria.</p>
+      </div>
+
+    </main>
+
+    <!-- FOOTER / CONTACTS -->
+    <footer style="border-top:1px solid var(--border);background:var(--card);padding:50px 24px;">
+      <div style="max-width:1280px;margin:0 auto;text-align:center;">
+        <h3 style="font-size:22px;font-weight:600;margin-bottom:8px;color:var(--text);">Entre em contato</h3>
+        <p style="color:var(--muted);margin-bottom:32px;font-size:14px;">Estamos prontas para ajudar você a encontrar a peça perfeita</p>
+        <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
+          <a href="tel:+5541995511560" style="flex:1 1 240px;max-width:320px;padding:24px;border-radius:16px;background:var(--bg);border:1px solid var(--border);text-decoration:none;color:var(--text);transition:all .3s ease;display:block;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin:0 auto 14px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <p style="font-size:18px;font-weight:600;margin-bottom:4px;">Nicole</p>
+            <p style="color:var(--accent2);font-size:16px;font-weight:600;">(41) 99551-1560</p>
+          </a>
+          <a href="tel:+5541991222449" style="flex:1 1 240px;max-width:320px;padding:24px;border-radius:16px;background:var(--bg);border:1px solid var(--border);text-decoration:none;color:var(--text);transition:all .3s ease;display:block;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin:0 auto 14px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <p style="font-size:18px;font-weight:600;margin-bottom:4px;">Fabiana</p>
+            <p style="color:var(--accent2);font-size:16px;font-weight:600;">(41) 99122-2449</p>
+          </a>
+        </div>
+        <p style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:0.1em;">
+          © 2026 CATÁLOGO · Joias & Acessórios
+        </p>
+      </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" style="display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;" class="modal-backdrop">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;width:90%;max-width:400px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);">
+        <button onclick="closeLoginModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;padding:4px;line-height:1;">×</button>
+        <h3 style="font-size:22px;font-weight:600;margin-bottom:6px;text-align:center;">Acesso Administrativo</h3>
+        <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:24px;">Entre com suas credenciais</p>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Usuário</label>
+          <input type="text" id="loginUser" class="input-field" placeholder="Digite o usuário" autocomplete="username">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Senha</label>
+          <input type="password" id="loginPass" class="input-field" placeholder="Digite a senha" autocomplete="current-password" onkeypress="if(event.key==='Enter')doLogin()">
+        </div>
+        <p id="loginError" style="color:#b91c1c;font-size:13px;margin-bottom:14px;display:none;text-align:center;">Usuário ou senha incorretos</p>
+        <button onclick="doLogin()" class="gold-btn" style="width:100%;padding:12px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;">Entrar</button>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" style="display:none;max-width:1280px;margin:0 auto;padding:40px 24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;">
+        <div>
+          <button onclick="backToStore()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;margin-bottom:8px;font-family:inherit;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="m15 18-6-6 6-6"/></svg>
+            Voltar à loja
+          </button>
+          <h2 style="font-size:28px;font-weight:700;">Painel Administrativo</h2>
+          <p style="color:var(--muted);font-size:14px;margin-top:4px;">Gerencie produtos, categorias e clientes</p>
+        </div>
+        <button onclick="logout()" class="ghost-btn" style="padding:10px 20px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Sair</button>
+      </div>
+
+      <!-- TABS -->
+      <div style="border-bottom:1px solid var(--border);margin-bottom:28px;display:flex;flex-wrap:wrap;gap:4px;">
+        <button onclick="switchTab('products')" class="tab-btn active" data-tab="products">Produtos</button>
+        <button onclick="switchTab('categories')" class="tab-btn" data-tab="categories">Categorias</button>
+        <button onclick="switchTab('clients')" class="tab-btn" data-tab="clients">Clientes</button>
+      </div>
+
+      <!-- TAB: PRODUCTS -->
+      <div id="tab-products" class="tab-content active">
+        <!-- ADD PRODUCT FORM -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Cadastrar Novo Produto
+          </h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+            <div style="grid-column:1 / -1;">
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Nome do produto</label>
+              <input type="text" id="prodName" class="input-field" placeholder="Ex: Anel de Ouro 18k">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Preço (R$)</label>
+              <input type="number" id="prodPrice" class="input-field" placeholder="0,00" step="0.01" min="0">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Código de Barras</label>
+              <input type="text" id="prodBarcode" class="input-field" placeholder="Digite o código">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Categoria</label>
+              <select id="prodCategory" class="input-field">
+                <!-- Options rendered by JS -->
+              </select>
+            </div>
+            <div style="grid-column:1 / -1;">
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Descrição</label>
+              <textarea id="prodDescription" class="input-field" placeholder="Descreva o produto: material, detalhes, tamanho..."></textarea>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Foto do produto</label>
+            <div id="dropZone" class="drop-zone" 
+                 onclick="document.getElementById('prodPhoto').click()"
+                 ondragover="event.preventDefault();this.classList.add('dragover')"
+                 ondragleave="this.classList.remove('dragover')"
+                 ondrop="handleDrop(event)">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" style="margin:0 auto 10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p style="color:var(--muted);font-size:14px;margin-bottom:4px;">Clique para enviar ou arraste uma imagem</p>
+              <p style="color:var(--muted);font-size:12px;">PNG ou JPG · ou pressione Ctrl+V para colar da área de transferência</p>
+              <input type="file" id="prodPhoto" accept=".png,.jpg,.jpeg,image/png,image/jpeg" style="display:none" onchange="handleFileSelect(event)">
+            </div>
+            <div id="photoPreview" style="display:none;margin-top:14px;position:relative;width:fit-content;">
+              <img id="previewImg" style="max-width:200px;max-height:200px;border-radius:12px;border:1px solid var(--border);">
+              <button onclick="clearPhoto()" style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#dc2626;color:#fff;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
+            </div>
+          </div>
+          <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+            <button onclick="saveProduct()" class="gold-btn" style="padding:12px 28px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;">Salvar Produto</button>
+            <button onclick="clearForm()" class="ghost-btn" style="padding:12px 28px;border-radius:10px;font-weight:500;font-size:15px;cursor:pointer;font-family:inherit;">Limpar Formulário</button>
+          </div>
+        </div>
+
+        <!-- PRODUCTS LIST -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;overflow-x:auto;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2"><path d="M20 7h-9M14 17H5M17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM7 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+            Produtos Cadastrados
+            <span id="prodCount" style="font-size:13px;color:var(--muted);font-weight:400;"></span>
+          </h3>
+          <table style="width:100%;min-width:900px;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);color:var(--muted);">
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Foto</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Nome</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Descrição</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Categoria</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Preço</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Status</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsList">
+              <!-- Admin products rendered here -->
+            </tbody>
+          </table>
+          <div id="adminEmpty" style="display:none;text-align:center;padding:40px;color:var(--muted);font-size:14px;">
+            Nenhum produto cadastrado ainda.
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CATEGORIES -->
+      <div id="tab-categories" class="tab-content">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Adicionar Nova Categoria
+          </h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;max-width:500px;">
+            <input type="text" id="newCategory" class="input-field" placeholder="Nome da nova categoria" style="flex:1;min-width:200px;">
+            <button onclick="addCategory()" class="gold-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap;">Adicionar</button>
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;overflow-x:auto;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            Categorias Cadastradas
+            <span id="catCount" style="font-size:13px;color:var(--muted);font-weight:400;"></span>
+          </h3>
+          <table style="width:100%;min-width:500px;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);color:var(--muted);">
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Nome da Categoria</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Produtos</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="categoriesList">
+              <!-- Categories rendered here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: CLIENTS -->
+      <div id="tab-clients" class="tab-content">
+        <!-- ADD CLIENT FORM -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:32px;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Cadastrar Novo Cliente
+          </h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Nome completo</label>
+              <input type="text" id="clientName" class="input-field" placeholder="Nome da cliente">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Telefone</label>
+              <input type="text" id="clientPhone" class="input-field" placeholder="(41) 99999-9999">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Produto comprado</label>
+              <input type="text" id="clientProduct" class="input-field" placeholder="O que comprou">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Valor total (R$)</label>
+              <input type="number" id="clientTotal" class="input-field" placeholder="0,00" step="0.01" min="0">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Valor já pago (R$)</label>
+              <input type="number" id="clientPaid" class="input-field" placeholder="0,00" step="0.01" min="0">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+              <button onclick="saveClient()" class="gold-btn" style="width:100%;padding:10px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;">Cadastrar Cliente</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENTS LIST -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;overflow-x:auto;box-shadow:0 2px 12px rgba(0,0,0,.04);">
+          <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Clientes Cadastrados
+            <span id="clientCount" style="font-size:13px;color:var(--muted);font-weight:400;"></span>
+          </h3>
+          <table style="width:100%;min-width:900px;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);color:var(--muted);">
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Cliente</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Telefone</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Produto</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Valor Total</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Pago</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Falta</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Status</th>
+                <th style="text-align:left;padding:12px 8px;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="clientsList">
+              <!-- Clients rendered here -->
+            </tbody>
+          </table>
+          <div id="clientsEmpty" style="display:none;text-align:center;padding:40px;color:var(--muted);font-size:14px;">
+            Nenhum cliente cadastrado ainda.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PRODUCT MODAL -->
+    <div id="editModal" style="display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;" class="modal-backdrop">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);">
+        <button onclick="closeEditModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;padding:4px;line-height:1;">×</button>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:20px;">Editar Produto</h3>
+        <input type="hidden" id="editId">
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Nome</label>
+          <input type="text" id="editName" class="input-field">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Descrição</label>
+          <textarea id="editDescription" class="input-field"></textarea>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Preço (R$)</label>
+          <input type="number" id="editPrice" class="input-field" step="0.01" min="0">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Código de Barras</label>
+          <input type="text" id="editBarcode" class="input-field">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Categoria</label>
+          <select id="editCategory" class="input-field">
+            <!-- Options rendered by JS -->
+          </select>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="saveEdit()" class="gold-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;">Salvar Alterações</button>
+          <button onclick="closeEditModal()" class="ghost-btn" style="padding:10px 24px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;font-family:inherit;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT CATEGORY MODAL -->
+    <div id="editCatModal" style="display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;" class="modal-backdrop">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;width:90%;max-width:400px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);">
+        <button onclick="closeEditCatModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;padding:4px;line-height:1;">×</button>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:20px;">Editar Categoria</h3>
+        <input type="hidden" id="editCatId">
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Nome da categoria</label>
+          <input type="text" id="editCatName" class="input-field">
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="saveCategoryEdit()" class="gold-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;">Salvar</button>
+          <button onclick="closeEditCatModal()" class="ghost-btn" style="padding:10px 24px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;font-family:inherit;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" style="display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;" class="modal-backdrop">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;width:90%;max-width:400px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);">
+        <button onclick="closePaymentModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;padding:4px;line-height:1;">×</button>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:6px;">Registrar Pagamento</h3>
+        <p id="paymentClientName" style="color:var(--muted);font-size:14px;margin-bottom:20px;"></p>
+        <input type="hidden" id="paymentClientId">
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Valor do pagamento (R$)</label>
+          <input type="number" id="paymentAmount" class="input-field" placeholder="0,00" step="0.01" min="0">
+        </div>
+        <p id="paymentRemaining" style="font-size:13px;color:var(--muted);margin-bottom:20px;"></p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="confirmPayment()" class="tiffany-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;">Confirmar Pagamento</button>
+          <button onclick="closePaymentModal()" class="ghost-btn" style="padding:10px 24px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;font-family:inherit;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT CLIENT MODAL -->
+    <div id="editClientModal" style="display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;" class="modal-backdrop">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);">
+        <button onclick="closeEditClientModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;padding:4px;line-height:1;">×</button>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:20px;">Editar Cliente</h3>
+        <input type="hidden" id="editClientId">
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Nome</label>
+          <input type="text" id="editClientName" class="input-field">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Telefone</label>
+          <input type="text" id="editClientPhone" class="input-field">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Produto comprado</label>
+          <input type="text" id="editClientProduct" class="input-field">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Valor total (R$)</label>
+          <input type="number" id="editClientTotal" class="input-field" step="0.01" min="0">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500;">Valor já pago (R$)</label>
+          <input type="number" id="editClientPaid" class="input-field" step="0.01" min="0">
+        </div>
+        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="saveClientEdit()" class="gold-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;">Salvar</button>
+          <button onclick="closeEditClientModal()" class="ghost-btn" style="padding:10px 24px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;font-family:inherit;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  if(!localStorage.getItem('catalog_categories')){
+    var defaultCats = [
+      {id: 1, name: 'Anéis'},
+      {id: 2, name: 'Brincos'},
+      {id: 3, name: 'Braceletes & Pulseiras'},
+      {id: 4, name: 'Colares & Pingentes'},
+      {id: 5, name: 'Óculos de Sol'}
+    ];
+    localStorage.setItem('catalog_categories', JSON.stringify(defaultCats));
+  }
+  if(!localStorage.getItem('catalog_products')){
+    localStorage.setItem('catalog_products', JSON.stringify([]));
+  }
+  if(!localStorage.getItem('catalog_clients')){
+    localStorage.setItem('catalog_clients', JSON.stringify([]));
+  }
+  
+  renderCategoryFilters();
+  renderProducts();
+  updateCategorySelects();
+  
+  document.addEventListener('paste', function(e){
+    var dropZone = document.getElementById('dropZone');
+    if(!dropZone) return;
+    var items = e.clipboardData.items;
+    for(var i=0;i<items.length;i++){
+      if(items[i].type.indexOf('image') !== -1){
+        var file = items[i].getAsFile();
+        if(file && (file.type === 'image/png' || file.type === 'image/jpeg')){
+          e.preventDefault();
+          processImageFile(file);
+          return;
+        }
+      }
+    }
+  });
+})();
+
+var currentPhotoData = null;
+var currentCategory = 'all';
+
+function getCategories(){ return JSON.parse(localStorage.getItem('catalog_categories') || '[]'); }
+function saveCategories(c){ localStorage.setItem('catalog_categories', JSON.stringify(c)); }
+function getProducts(){ return JSON.parse(localStorage.getItem('catalog_products') || '[]'); }
+function saveProducts(p){ localStorage.setItem('catalog_products', JSON.stringify(p)); }
+function getClients(){ return JSON.parse(localStorage.getItem('catalog_clients') || '[]'); }
+function saveClients(c){ localStorage.setItem('catalog_clients', JSON.stringify(c)); }
+
+function formatPrice(p){
+  return 'R$ ' + parseFloat(p || 0).toFixed(2).replace('.', ',');
+}
+
+function renderCategoryFilters(){
+  var cats = getCategories();
+  var container = document.getElementById('categoryFilters');
+  var html = '<button onclick="filterCategory(\'all\')" class="category-btn active" data-category="all" style="padding:10px 22px;border-radius:24px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Todos</button>';
+  cats.forEach(function(cat){
+    html += '<button onclick="filterCategory(\''+cat.id+'\')" class="category-btn" data-category="'+cat.id+'" style="padding:10px 22px;border-radius:24px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">'+cat.name+'</button>';
+  });
+  container.innerHTML = html;
+}
+
+function updateCategorySelects(){
+  var cats = getCategories();
+  var options = cats.map(function(c){ return '<option value="'+c.id+'">'+c.name+'</option>'; }).join('');
+  var prodSel = document.getElementById('prodCategory');
+  var editSel = document.getElementById('editCategory');
+  if(prodSel) prodSel.innerHTML = options;
+  if(editSel) editSel.innerHTML = options;
+}
+
+function getCategoryName(catId){
+  var cat = getCategories().find(function(c){ return c.id == catId; });
+  return cat ? cat.name : 'Sem categoria';
+}
+
+function renderProducts(){
+  var products = getProducts().filter(function(p){ return !p.sold; });
+  var grid = document.getElementById('productsGrid');
+  var empty = document.getElementById('emptyState');
+  
+  if(currentCategory !== 'all'){
+    products = products.filter(function(p){ return p.category == currentCategory; });
+  }
+  
+  if(products.length === 0){
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  
+  empty.style.display = 'none';
+  
+  grid.innerHTML = products.map(function(p){
+    var imgHtml = p.photo 
+      ? '<img src="'+p.photo+'" alt="'+p.name+'" style="width:100%;height:220px;object-fit:cover;border-radius:12px 12px 0 0;display:block;">'
+      : '<div style="width:100%;height:220px;background:var(--bg);border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>';
+    
+    var descHtml = p.description ? '<p class="product-desc">'+p.description+'</p>' : '';
+    
+    return '<div class="product-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;">' +
+      imgHtml +
+      '<div style="padding:18px;">' +
+        '<p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">'+getCategoryName(p.category)+'</p>' +
+        '<h4 style="font-size:16px;font-weight:600;margin-bottom:4px;color:var(--text);">'+p.name+'</h4>' +
+        descHtml +
+        '<p style="font-size:20px;margin-top:'+(p.description?'10px':'8px')+'" class="price-tag">'+formatPrice(p.price)+'</p>' +
+        (p.barcode ? '<p style="font-size:12px;color:var(--muted);margin-top:6px;font-family:monospace;">Ref: '+p.barcode+'</p>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function filterCategory(cat){
+  currentCategory = cat;
+  document.querySelectorAll('.category-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.category === cat);
+  });
+  renderProducts();
+}
+
+function openLoginModal(){
+  document.getElementById('loginModal').style.display = 'flex';
+  document.getElementById('loginUser').focus();
+  document.getElementById('loginError').style.display = 'none';
+}
+function closeLoginModal(){
+  document.getElementById('loginModal').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+function doLogin(){
+  var user = document.getElementById('loginUser').value.trim();
+  var pass = document.getElementById('loginPass').value.trim();
+  if(user === 'FabiNic' && pass === 'JoiasFN'){
+    closeLoginModal();
+    showAdminPanel();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function logout(){
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function backToStore(){
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function showAdminPanel(){
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  updateCategorySelects();
+  renderAdminProducts();
+  renderCategoriesList();
+  renderClientsList();
+  switchTab('products');
+  window.scrollTo(0, 0);
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === tab); });
+  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.toggle('active', c.id === 'tab-'+tab); });
+}
+
+function handleFileSelect(e){ var file = e.target.files[0]; if(file) processImageFile(file); }
+function handleDrop(e){
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragover');
+  var file = e.dataTransfer.files[0];
+  if(file) processImageFile(file);
+}
+function processImageFile(file){
+  if(file.type !== 'image/png' && file.type !== 'image/jpeg'){
+    alert('Por favor, selecione uma imagem PNG ou JPG.');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    currentPhotoData = e.target.result;
+    document.getElementById('previewImg').src = currentPhotoData;
+    document.getElementById('photoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+function clearPhoto(){
+  currentPhotoData = null;
+  document.getElementById('photoPreview').style.display = 'none';
+  document.getElementById('prodPhoto').value = '';
+}
+
+function saveProduct(){
+  var name = document.getElementById('prodName').value.trim();
+  var price = document.getElementById('prodPrice').value;
+  var barcode = document.getElementById('prodBarcode').value.trim();
+  var category = document.getElementById('prodCategory').value;
+  var description = document.getElementById('prodDescription').value.trim();
+  
+  if(!name){ alert('Digite o nome do produto.'); return; }
+  if(!price || parseFloat(price) < 0){ alert('Digite um preço válido.'); return; }
+  
+  var product = {
+    id: Date.now(),
+    name: name,
+    description: description,
+    price: parseFloat(price),
+    barcode: barcode,
+    category: category,
+    photo: currentPhotoData,
+    sold: false,
+    createdAt: new Date().toISOString()
+  };
+  
+  var products = getProducts();
+  products.unshift(product);
+  saveProducts(products);
+  
+  clearForm();
+  renderProducts();
+  renderAdminProducts();
+  alert('Produto cadastrado com sucesso!');
+}
+
+function clearForm(){
+  document.getElementById('prodName').value = '';
+  document.getElementById('prodDescription').value = '';
+  document.getElementById('prodPrice').value = '';
+  document.getElementById('prodBarcode').value = '';
+  clearPhoto();
+}
+
+function renderAdminProducts(){
+  var products = getProducts();
+  var tbody = document.getElementById('adminProductsList');
+  var empty = document.getElementById('adminEmpty');
+  var count = document.getElementById('prodCount');
+  
+  count.textContent = '(' + products.length + ')';
+  
+  if(products.length === 0){
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  
+  tbody.innerHTML = products.map(function(p){
+    var imgHtml = p.photo 
+      ? '<img src="'+p.photo+'" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">'
+      : '<div style="width:50px;height:50px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>';
+    
+    var shortDesc = p.description ? (p.description.length > 50 ? p.description.substring(0,50)+'...' : p.description) : '-';
+    
+    var statusBadge = p.sold 
+      ? '<span class="sold-badge">Vendido</span>'
+      : '<span class="paid-badge">Disponível</span>';
+    
+    var soldBtn = p.sold
+      ? '<button onclick="toggleSold('+p.id+')" class="tiffany-btn" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;">Reativar</button>'
+      : '<button onclick="toggleSold('+p.id+')" class="danger-btn" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;">Vendido</button>';
+    
+    return '<tr class="admin-row" style="border-bottom:1px solid var(--border);">' +
+      '<td style="padding:12px 8px;">'+imgHtml+'</td>' +
+      '<td style="padding:12px 8px;font-weight:500;max-width:160px;">'+p.name+'</td>' +
+      '<td style="padding:12px 8px;color:var(--muted);font-size:12px;max-width:200px;">'+shortDesc+'</td>' +
+      '<td style="padding:12px 8px;color:var(--muted);font-size:13px;">'+getCategoryName(p.category)+'</td>' +
+      '<td style="padding:12px 8px;" class="price-tag">'+formatPrice(p.price)+'</td>' +
+      '<td style="padding:12px 8px;">'+statusBadge+'</td>' +
+      '<td style="padding:12px 8px;">' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          soldBtn +
+          '<button onclick="openEditModal('+p.id+')" class="ghost-btn" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;">Editar</button>' +
+          '<button onclick="deleteProduct('+p.id+')" class="ghost-btn" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;color:#b91c1c;white-space:nowrap;">Excluir</button>' +
+        '</div>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function toggleSold(id){
+  var products = getProducts();
+  var p = products.find(function(x){ return x.id === id; });
+  if(p){
+    p.sold = !p.sold;
+    saveProducts(products);
+    renderProducts();
+    renderAdminProducts();
+  }
+}
+
+function deleteProduct(id){
+  if(confirm('Tem certeza que deseja excluir este produto permanentemente?')){
+    var products = getProducts().filter(function(x){ return x.id !== id; });
+    saveProducts(products);
+    renderProducts();
+    renderAdminProducts();
+  }
+}
+
+function openEditModal(id){
+  var p = getProducts().find(function(x){ return x.id === id; });
+  if(!p) return;
+  updateCategorySelects();
+  document.getElementById('editId').value = p.id;
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editDescription').value = p.description || '';
+  document.getElementById('editPrice').value = p.price;
+  document.getElementById('editBarcode').value = p.barcode || '';
+  document.getElementById('editCategory').value = p.category;
+  document.getElementById('editModal').style.display = 'flex';
+}
+function closeEditModal(){ document.getElementById('editModal').style.display = 'none'; }
+
+function saveEdit(){
+  var id = parseInt(document.getElementById('editId').value);
+  var products = getProducts();
+  var p = products.find(function(x){ return x.id === id; });
+  if(!p) return;
+  
+  var name = document.getElementById('editName').value.trim();
+  var description = document.getElementById('editDescription').value.trim();
+  var price = document.getElementById('editPrice').value;
+  var barcode = document.getElementById('editBarcode').value.trim();
+  var category = document.getElementById('editCategory').value;
+  
+  if(!name){ alert('Digite o nome do produto.'); return; }
+  if(!price || parseFloat(price) < 0){ alert('Digite um preço válido.'); return; }
+  
+  p.name = name;
+  p.description = description;
+  p.price = parseFloat(price);
+  p.barcode = barcode;
+  p.category = category;
+  
+  saveProducts(products);
+  closeEditModal();
+  renderProducts();
+  renderAdminProducts();
+}
+
+function addCategory(){
+  var input = document.getElementById('newCategory');
+  var name = input.value.trim();
+  if(!name){ alert('Digite o nome da categoria.'); return; }
+  
+  var cats = getCategories();
+  cats.push({id: Date.now(), name: name});
+  saveCategories(cats);
+  
+  input.value = '';
+  renderCategoryFilters();
+  updateCategorySelects();
+  renderCategoriesList();
+}
+
+function renderCategoriesList(){
+  var cats = getCategories();
+  var products = getProducts();
+  var tbody = document.getElementById('categoriesList');
+  var count = document.getElementById('catCount');
+  
+  count.textContent = '(' + cats.length + ')';
+  
+  tbody.innerHTML = cats.map(function(cat){
+    var prodCount = products.filter(function(p){ return p.category == cat.id; }).length;
+    return '<tr class="admin-row" style="border-bottom:1px solid var(--border);">' +
+      '<td style="padding:14px 8px;font-weight:500;font-size:15px;">'+cat.name+'</td>' +
+      '<td style="padding:14px 8px;color:var(--muted);font-size:14px;">'+prodCount+' produto(s)</td>' +
+      '<td style="padding:14px 8px;">' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          '<button onclick="openEditCatModal('+cat.id+')" class="ghost-btn" style="padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;">Editar</button>' +
+          '<button onclick="deleteCategory('+cat.id+')" class="ghost-btn" style="padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;color:#b91c1c;">Excluir</button>' +
+        '</div>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function openEditCatModal(id){
+  var cat = getCategories().find(function(c){ return c.id === id; });
+  if(!cat) return;
+  document.getElementById('editCatId').value = cat.id;
+  document.getElementById('editCatName').value = cat.name;
+  document.getElementById('editCatModal').style.display = 'flex';
+}
+function closeEditCatModal(){ document.getElementById('editCatModal').style.display = 'none'; }
+
+function saveCategoryEdit(){
+  var id = parseInt(document.getElementById('editCatId').value);
+  var name = document.getElementById('editCatName').value.trim();
+  if(!name){ alert('Digite o nome da categoria.'); return; }
+  
+  var cats = getCategories();
+  var cat = cats.find(function(c){ return c.id === id; });
+  if(cat){
+    cat.name = name;
+    saveCategories(cats);
+    closeEditCatModal();
+    renderCategoryFilters();
+    updateCategorySelects();
+    renderCategoriesList();
+    renderProducts();
+    renderAdminProducts();
+  }
+}
+
+function deleteCategory(id){
+  var products = getProducts();
+  var hasProducts = products.some(function(p){ return p.category == id; });
+  if(hasProducts){
+    alert('Não é possível excluir: esta categoria possui produtos cadastrados.\nMova ou exclua os produtos primeiro.');
+    return;
+  }
+  if(confirm('Tem certeza que deseja excluir esta categoria?')){
+    var cats = getCategories().filter(function(c){ return c.id !== id; });
+    saveCategories(cats);
+    renderCategoryFilters();
+    updateCategorySelects();
+    renderCategoriesList();
+  }
+}
+
+function saveClient(){
+  var name = document.getElementById('clientName').value.trim();
+  var phone = document.getElementById('clientPhone').value.trim();
+  var product = document.getElementById('clientProduct').value.trim();
+  var total = document.getElementById('clientTotal').value;
+  var paid = document.getElementById('clientPaid').value || 0;
+  
+  if(!name){ alert('Digite o nome da cliente.'); return; }
+  if(!product){ alert('Digite o produto comprado.'); return; }
+  if(!total || parseFloat(total) < 0){ alert('Digite um valor total válido.'); return; }
+  
+  var client = {
+    id: Date.now(),
+    name: name,
+    phone: phone,
+    product: product,
+    total: parseFloat(total),
+    paid: parseFloat(paid),
+    createdAt: new Date().toISOString()
+  };
+  
+  var clients = getClients();
+  clients.unshift(client);
+  saveClients(clients);
+  
+  document.getElementById('clientName').value = '';
+  document.getElementById('clientPhone').value = '';
+  document.getElementById('clientProduct').value = '';
+  document.getElementById('clientTotal').value = '';
+  document.getElementById('clientPaid').value = '';
+  
+  renderClientsList();
+  alert('Cliente cadastrado com sucesso!');
+}
+
+function renderClientsList(){
+  var clients = getClients();
+  var tbody = document.getElementById('clientsList');
+  var empty = document.getElementById('clientsEmpty');
+  var count = document.getElementById('clientCount');
+  
+  count.textContent = '(' + clients.length + ')';
+  
+  if(clients.length === 0){
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  
+  tbody.innerHTML = clients.map(function(c){
+    var remaining = Math.max(0, c.total - c.paid);
+    var statusBadge;
+    if(remaining <= 0){
+      statusBadge = '<span class="paid-badge">Quitado</span>';
+    } else if(c.paid > 0){
+      statusBadge = '<span class="pending-badge">Parcial</span>';
+    } else {
+      statusBadge = '<span class="overdue-badge">Pendente</span>';
+    }
+    
+    var remainingColor = remaining <= 0 ? 'var(--accent2)' : '#b91c1c';
+    
+    return '<tr class="admin-row" style="border-bottom:1px solid var(--border);">' +
+      '<td style="padding:12px 8px;font-weight:500;">'+c.name+'</td>' +
+      '<td style="padding:12px 8px;color:var(--muted);font-size:13px;">'+(c.phone || '-')+'</td>' +
+      '<td style="padding:12px 8px;font-size:13px;">'+c.product+'</td>' +
+      '<td style="padding:12px 8px;font-weight:500;">'+formatPrice(c.total)+'</td>' +
+      '<td style="padding:12px 8px;color:var(--accent2);font-weight:600;">'+formatPrice(c.paid)+'</td>' +
+      '<td style="padding:12px 8px;font-weight:600;color:'+remainingColor+'">'+formatPrice(remaining)+'</td>' +
+      '<td style="padding:12px 8px;">'+statusBadge+'</td>' +
+      '<td style="padding:12px 8px;">' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          (remaining > 0 ? '<button onclick="openPaymentModal('+c.id+')" class="tiffany-btn" style="padding:6px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">+ Pagamento</button>' : '') +
+          '<button onclick="openEditClientModal('+c.id+')" class="ghost-btn" style="padding:6px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;">Editar</button>' +
+          '<button onclick="deleteClient('+c.id+')" class="ghost-btn" style="padding:6px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;color:#b91c1c;white-space:nowrap;">Excluir</button>' +
+        '</div>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function openPaymentModal(id){
+  var c = getClients().find(function(x){ return x.id === id; });
+  if(!c) return;
+  var remaining = Math.max(0, c.total - c.paid);
+  document.getElementById('paymentClientId').value = c.id;
+  document.getElementById('paymentClientName').textContent = c.name + ' · ' + c.product;
+  document.getElementById('paymentRemaining').textContent = 'Valor em aberto: ' + formatPrice(remaining);
+  document.getElementById('paymentAmount').value = '';
+  document.getElementById('paymentAmount').placeholder = 'Máximo: ' + remaining.toFixed(2).replace('.', ',');
+  document.getElementById('paymentAmount').max = remaining;
+  document.getElementById('paymentModal').style.display = 'flex';
+}
+function closePaymentModal(){ document.getElementById('paymentModal').style.display = 'none'; }
+
+function confirmPayment(){
+  var id = parseInt(document.getElementById('paymentClientId').value);
+  var amount = parseFloat(document.getElementById('paymentAmount').value);
+  if(!amount || amount <= 0){ alert('Digite um valor válido.'); return; }
+  
+  var clients = getClients();
+  var c = clients.find(function(x){ return x.id === id; });
+  if(!c) return;
+  
+  var remaining = c.total - c.paid;
+  if(amount > remaining){
+    if(!confirm('O valor informado é maior que o devido ('+formatPrice(remaining)+').\nDeseja registrar mesmo assim?')) return;
+  }
+  
+  c.paid = parseFloat((c.paid + amount).toFixed(2));
+  saveClients(clients);
+  closePaymentModal();
+  renderClientsList();
+  alert('Pagamento de '+formatPrice(amount)+' registrado com sucesso!');
+}
+
+function openEditClientModal(id){
+  var c = getClients().find(function(x){ return x.id === id; });
+  if(!c) return;
+  document.getElementById('editClientId').value = c.id;
+  document.getElementById('editClientName').value = c.name;
+  document.getElementById('editClientPhone').value = c.phone || '';
+  document.getElementById('editClientProduct').value = c.product;
+  document.getElementById('editClientTotal').value = c.total;
+  document.getElementById('editClientPaid').value = c.paid;
+  document.getElementById('editClientModal').style.display = 'flex';
+}
+function closeEditClientModal(){ document.getElementById('editClientModal').style.display = 'none'; }
+
+function saveClientEdit(){
+  var id = parseInt(document.getElementById('editClientId').value);
+  var clients = getClients();
+  var c = clients.find(function(x){ return x.id === id; });
+  if(!c) return;
+  
+  var name = document.getElementById('editClientName').value.trim();
+  var phone = document.getElementById('editClientPhone').value.trim();
+  var product = document.getElementById('editClientProduct').value.trim();
+  var total = document.getElementById('editClientTotal').value;
+  var paid = document.getElementById('editClientPaid').value || 0;
+  
+  if(!name){ alert('Digite o nome da cliente.'); return; }
+  if(!product){ alert('Digite o produto comprado.'); return; }
+  if(!total || parseFloat(total) < 0){ alert('Digite um valor total válido.'); return; }
+  
+  c.name = name;
+  c.phone = phone;
+  c.product = product;
+  c.total = parseFloat(total);
+  c.paid = parseFloat(paid);
+  
+  saveClients(clients);
+  closeEditClientModal();
+  renderClientsList();
+}
+
+function deleteClient(id){
+  if(confirm('Tem certeza que deseja excluir este cliente permanentemente?')){
+    var clients = getClients().filter(function(x){ return x.id !== id; });
+    saveClients(clients);
+    renderClientsList();
+  }
+}
+</script>
