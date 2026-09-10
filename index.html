@@ -28,6 +28,7 @@
     let allCategories = [];
     let allProducts = [];
     let allClients = [];
+    let clientSelectedProducts = [];
     let photoB64 = null;
     let editingProductId = null;
     let isAdminMode = false;
@@ -770,9 +771,15 @@
             <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Telefone</label>
             <input type="text" id="clientPhone" class="input-field" placeholder="(41) 99999-9999">
           </div>
-          <div>
-            <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Produto comprado</label>
-            <input type="text" id="clientProduct" class="input-field" placeholder="Nome do produto">
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Adicionar Produtos (Código de Barras)</label>
+            <div style="display:flex;gap:12px;">
+              <input type="text" id="clientBarcodeSearch" class="input-field barcode-field" placeholder="Ex: 7891234567890" onkeypress="if(event.key==='Enter') addProductToClient()">
+              <button onclick="addProductToClient()" class="ghost-btn" style="padding:10px 24px;border-radius:10px;font-weight:600;cursor:pointer;white-space:nowrap;">Adicionar</button>
+            </div>
+            <div id="clientSelectedProductsList" style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+              <p style="color:var(--muted);font-size:13px;">Nenhum produto adicionado à venda.</p>
+            </div>
           </div>
           <div>
             <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">Valor total (R$)</label>
@@ -1103,19 +1110,116 @@
     async function saveClient() {
       const nome = document.getElementById('clientName').value.trim();
       const telefone = document.getElementById('clientPhone').value.trim();
-      const produto = document.getElementById('clientProduct').value.trim();
       const total = parseFloat(document.getElementById('clientTotal').value || 0);
       const pago = parseFloat(document.getElementById('clientPaid').value || 0);
       if (!nome || !total) return alert('Preencha nome e valor total');
-      await db.collection('clientes').add({ nome, telefone, produto, valorTotal: total, valorPago: pago, dataCadastro: new Date() });
-      clearClientForm(); loadClients();
+      if (clientSelectedProducts.length === 0) return alert('Adicione pelo menos um produto na venda.');
+
+      const produtosComprados = clientSelectedProducts.map(p => ({ id: p.id, nome: p.nome, preco: p.preco }));
+      const descProdutos = produtosComprados.map(p => p.nome).join(', ');
+
+      const saveBtn = event.target;
+      const originalText = saveBtn.innerText;
+      saveBtn.innerText = 'Salvando...';
+      saveBtn.disabled = true;
+
+      try {
+        await db.collection('clientes').add({ 
+          nome, 
+          telefone, 
+          produto: descProdutos, 
+          produtos: produtosComprados,
+          valorTotal: total, 
+          valorPago: pago, 
+          dataCadastro: new Date() 
+        });
+
+        // Atualizar o status dos produtos no estoque
+        for (const prod of clientSelectedProducts) {
+          await db.collection('produtos').doc(prod.id).update({ vendido: true });
+        }
+
+        clearClientForm(); 
+        loadClients();
+        loadProducts(); // Refresh products so they show as sold
+        alert('Venda registrada e produtos baixados do estoque com sucesso!');
+      } catch (err) {
+        console.error('Erro ao salvar venda:', err);
+        alert('Erro ao registrar a venda: ' + err.message);
+      } finally {
+        saveBtn.innerText = originalText;
+        saveBtn.disabled = false;
+      }
     }
+    
+    function addProductToClient() {
+      const barcodeInput = document.getElementById('clientBarcodeSearch');
+      const barcode = barcodeInput.value.trim();
+      if (!barcode) return;
+      
+      const prod = allProducts.find(p => p.codigoBarras === barcode);
+      if (!prod) {
+        alert('Produto não encontrado com este código de barras.');
+        return;
+      }
+      if (prod.vendido) {
+        alert('Este produto já consta como vendido no sistema.');
+        return;
+      }
+      
+      if (clientSelectedProducts.find(p => p.id === prod.id)) {
+        alert('Este produto já foi adicionado à venda.');
+        barcodeInput.value = '';
+        return;
+      }
+
+      clientSelectedProducts.push(prod);
+      barcodeInput.value = '';
+      
+      const currentTotal = parseFloat(document.getElementById('clientTotal').value || 0);
+      document.getElementById('clientTotal').value = (currentTotal + (Number(prod.preco) || 0)).toFixed(2);
+      
+      renderClientSelectedProducts();
+    }
+
+    function removeProductFromClient(index) {
+      const prod = clientSelectedProducts[index];
+      clientSelectedProducts.splice(index, 1);
+      
+      const currentTotal = parseFloat(document.getElementById('clientTotal').value || 0);
+      const newTotal = Math.max(0, currentTotal - (Number(prod.preco) || 0));
+      document.getElementById('clientTotal').value = newTotal > 0 ? newTotal.toFixed(2) : '';
+      
+      renderClientSelectedProducts();
+    }
+
+    function renderClientSelectedProducts() {
+      const container = document.getElementById('clientSelectedProductsList');
+      if (clientSelectedProducts.length === 0) {
+        container.innerHTML = '<p style="color:var(--muted);font-size:13px;">Nenhum produto adicionado à venda.</p>';
+        return;
+      }
+      
+      container.innerHTML = clientSelectedProducts.map((p, i) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:8px 12px;border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:13px;">
+            <strong>${p.nome}</strong> | ${p.codigoBarras}
+            <br><span style="color:var(--accent2);font-weight:600;">R$ ${Number(p.preco || 0).toFixed(2).replace('.', ',')}</span>
+          </div>
+          <button onclick="removeProductFromClient(${i})" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:16px;" title="Remover">×</button>
+        </div>
+      `).join('');
+    }
+
     function clearClientForm() {
       document.getElementById('clientName').value = '';
       document.getElementById('clientPhone').value = '';
-      document.getElementById('clientProduct').value = '';
+      const bc = document.getElementById('clientBarcodeSearch');
+      if(bc) bc.value = '';
       document.getElementById('clientTotal').value = '';
       document.getElementById('clientPaid').value = '';
+      clientSelectedProducts = [];
+      renderClientSelectedProducts();
     }
     function renderClientsList() {
       const c = document.getElementById('clientsList');
