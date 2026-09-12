@@ -183,6 +183,33 @@
       background: rgba(0, 0, 0, .5);
       backdrop-filter: blur(4px);
     }
+    
+    .gallery-modal-content {
+      background: var(--card);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      padding: 24px;
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .gallery-img-view {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .gallery-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 12px;
+    }
 
     .gold-btn {
       background: var(--accent-soft);
@@ -701,13 +728,8 @@
               </p>
             </div>
             <input type="file" id="hiddenFileInput" accept="image/*" onchange="handlePhoto(event)"
-              style="margin:12px 0;display:block;">
-            <div id="previewContainer" style="display:none;margin-top:12px;">
-              <img id="photoPreviewImg"
-                style="max-width:220px;max-height:220px;border-radius:8px;border:1px solid var(--border);">
-              <button onclick="removePhoto()" class="danger-btn"
-                style="margin-top:8px;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Remover
-                imagem</button>
+              style="margin:12px 0;display:block;" multiple>
+            <div id="previewContainer" style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
             </div>
           </div>
         </div>
@@ -935,10 +957,15 @@
       if (currentCategory !== 'Todas') filtered = filtered.filter(p => p.categoria === currentCategory);
       if (!filtered.length) { g.innerHTML = ''; empty.style.display = 'block'; return; }
       empty.style.display = 'none';
-      g.innerHTML = filtered.map(p => `<div class="product-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;height:100%;">
+      g.innerHTML = filtered.map(p => {
+        const fotos = p.fotosBase64 && p.fotosBase64.length > 0 ? p.fotosBase64 : (p.fotoBase64 ? [p.fotoBase64] : []);
+        const clickEvent = fotos.length > 1 ? `onclick="openGallery('${p.id}')" style="cursor:pointer;"` : '';
+        const multImgBadge = fotos.length > 1 ? `<div style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);color:#fff;font-size:12px;padding:4px 8px;border-radius:12px;">+${fotos.length - 1} fotos (clique)</div>` : '';
+        return `<div class="product-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;height:100%;">
     <div>
-      <div class="product-image-container">
-        ${p.fotoBase64 ? `<img src="${p.fotoBase64}" alt="${p.nome}">` : '<span style="color:var(--muted);">Sem foto</span>'}
+      <div class="product-image-container" ${clickEvent} style="position:relative;">
+        ${fotos.length > 0 ? `<img src="${fotos[0]}" alt="${p.nome}">` : '<span style="color:var(--muted);">Sem foto</span>'}
+        ${multImgBadge}
       </div>
       <div style="padding:16px;">
         <h4 style="font-weight:600;font-size:16px;margin-bottom:4px;">${p.nome}</h4>
@@ -954,7 +981,8 @@
         Pedir no WhatsApp
       </button>
     </div>
-  </div>`).join('');
+  </div>`;
+      }).join('');
     }
 
     function renderAdminProductsList() {
@@ -1033,22 +1061,50 @@
     }
 
     function handlePhoto(e) {
-      const f = e.target.files[0]; if (!f) return;
-      const r = new FileReader(); 
-      r.onload = x => { 
-        compressImage(x.target.result, (compressed) => {
-          photoB64 = compressed; 
-          document.getElementById('photoPreviewImg').src = photoB64; 
-          document.getElementById('previewContainer').style.display = 'block'; 
-        });
-      }; 
-      r.readAsDataURL(f);
-    }
-    function removePhoto() {
-      photoB64 = null;
-      document.getElementById('previewContainer').style.display = 'none';
-      document.getElementById('photoPreviewImg').src = '';
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+      
+      let maxAllowed = 4 - photosB64.length;
+      if (maxAllowed <= 0) {
+        alert("O limite máximo é de 4 fotos por produto.");
+        document.getElementById('hiddenFileInput').value = '';
+        return;
+      }
+      
+      const filesToProcess = files.slice(0, maxAllowed);
+      
+      filesToProcess.forEach(f => {
+        const r = new FileReader(); 
+        r.onload = x => { 
+          compressImage(x.target.result, (compressed) => {
+            photosB64.push(compressed);
+            renderPhotosPreview();
+          });
+        }; 
+        r.readAsDataURL(f);
+      });
       document.getElementById('hiddenFileInput').value = '';
+    }
+    
+    function removePhoto(index) {
+      photosB64.splice(index, 1);
+      renderPhotosPreview();
+    }
+    
+    function renderPhotosPreview() {
+      const container = document.getElementById('previewContainer');
+      container.innerHTML = '';
+      photosB64.forEach((b64, idx) => {
+        const div = document.createElement('div');
+        div.style.position = 'relative';
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.innerHTML = `
+          <img src="${b64}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid var(--border);">
+          <button onclick="removePhoto(${idx})" class="danger-btn" style="position:absolute;top:-5px;right:-5px;width:24px;height:24px;border-radius:50%;padding:0;font-size:12px;line-height:1;display:flex;align-items:center;justify-content:center;">&times;</button>
+        `;
+        container.appendChild(div);
+      });
     }
 
     async function saveProduct() {
@@ -1066,9 +1122,12 @@
       saveBtn.disabled = true;
 
       try {
-        const dadosProduto = { nome, codigoBarras, fornecedor, preco, categoria, descricao, fotoBase64: photoB64 };
+        const dadosProduto = { nome, codigoBarras, fornecedor, preco, categoria, descricao, fotosBase64: photosB64 };
         if (editingProductId) {
-          await db.collection('produtos').doc(editingProductId).update(dadosProduto);
+          await db.collection('produtos').doc(editingProductId).update({
+            ...dadosProduto,
+            fotoBase64: firebase.firestore.FieldValue.delete()
+          });
           alert('✅ Produto atualizado com sucesso!');
         } else {
           dadosProduto.vendido = false;
@@ -1300,13 +1359,63 @@
       closeWhatsAppModal();
     }
 
+    let currentGalleryImages = [];
+    let galleryIndex = 0;
+
+    function openGallery(productId) {
+      const prod = allProducts.find(p => p.id === productId);
+      if (!prod) return;
+      currentGalleryImages = prod.fotosBase64 || (prod.fotoBase64 ? [prod.fotoBase64] : []);
+      if (currentGalleryImages.length <= 1) return; // Nao abre se so tiver 1, ja aparece na vitrine
+      
+      galleryIndex = 0;
+      updateGalleryView();
+      document.getElementById('galleryModal').style.display = 'flex';
+      setTimeout(() => document.getElementById('galleryModal').style.opacity = '1', 10);
+    }
+    
+    function closeGallery() {
+      const modal = document.getElementById('galleryModal');
+      modal.style.opacity = '0';
+      setTimeout(() => modal.style.display = 'none', 300);
+    }
+    
+    function updateGalleryView() {
+      document.getElementById('galleryImg').src = currentGalleryImages[galleryIndex];
+      document.getElementById('galleryCounter').innerText = `${galleryIndex + 1} de ${currentGalleryImages.length}`;
+    }
+    
+    function prevGalleryImage() {
+      galleryIndex = (galleryIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+      updateGalleryView();
+    }
+    
+    function nextGalleryImage() {
+      galleryIndex = (galleryIndex + 1) % currentGalleryImages.length;
+      updateGalleryView();
+    }
+
     window.addEventListener('click', function (e) {
       const wm = document.getElementById('whatsappModal');
+      const gm = document.getElementById('galleryModal');
       if (e.target === wm) closeWhatsAppModal();
+      if (e.target === gm) closeGallery();
     });
 
     window.onload = function () { loadCategories(); loadProducts(); };
   </script>
+  
+  <div id="galleryModal" class="modal-backdrop" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s ease;">
+    <div class="gallery-modal-content">
+      <button onclick="closeGallery()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--text);">&times;</button>
+      <img id="galleryImg" class="gallery-img-view" src="">
+      <div id="galleryCounter" style="font-size:14px;color:var(--muted);font-weight:600;margin-bottom:8px;"></div>
+      <div class="gallery-controls">
+        <button onclick="prevGalleryImage()" class="ghost-btn" style="padding:8px 16px;border-radius:8px;">⬅️ Anterior</button>
+        <button onclick="nextGalleryImage()" class="ghost-btn" style="padding:8px 16px;border-radius:8px;">Próxima ➡️</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
