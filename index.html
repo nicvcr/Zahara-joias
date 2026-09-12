@@ -1023,7 +1023,8 @@
       <button onclick="toggleSold('${p.id}', ${p.vendido})" class="${p.vendido ? 'ghost-btn' : 'sold-btn'}" style="padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;">${p.vendido ? '↩️ Reativar' : '✅ Vendido'}</button>
       <button onclick="deleteProduct('${p.id}')" class="danger-btn" style="padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;">Excluir</button>
     </div>
-  </div>`).join('');
+  </div>`;
+      }).join('');
     }
 
     function editProduct(productId) {
